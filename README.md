@@ -11,6 +11,8 @@ Decision Support System for **Perrito Reciclado** that predicts customer loyalty
 - `README.md`: This documentation file.
 - [LICENSE](LICENSE): MIT License for the project.
 - .gitignore: Git ignore rules.
+- docs/: Folder containing project documentation.
+  - docs/: Proyecto - Apoyo a la Toma de Decisiones.pdf: Original project documentation.
 - data/: Folder containing the Excel data file.
   - data/: Datos_Entrenamiento_Final.xlsx: Training/lookup data with sheet `CLIENTES`.
 - models/: Folder containing model artifacts (.pkl files).
@@ -18,7 +20,7 @@ Decision Support System for **Perrito Reciclado** that predicts customer loyalty
   - models/: columnas_modelo.pkl: Expected feature columns for inference.
   - models/: traductor_respuestas.pkl: Label encoder for predictions.
 - notebooks/: Jupyter notebooks used for model training and experimentation.
-  - notebooks/: Perrito.ipynb: Model training and evaluation notebook.
+  - notebooks/: Perrito.ipynb: Original training notebook for audit and observation, not used in the app and kept for reference, don't try to run it.
 - [app.py](app.py): Streamlit app (UI + inference logic).
 - [requirements.txt](requirements.txt): Python dependencies that are required to run the app.
 
