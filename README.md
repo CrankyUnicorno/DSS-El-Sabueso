@@ -8,17 +8,24 @@ Decision Support System for **Perrito Reciclado** that predicts customer loyalty
 - Supports two workflows: **Manual entry** and **Lookup existing customer** from an Excel database.
 
 ## Project Structure
+- `README.md`: This documentation file.
+- [LICENSE](LICENSE): MIT License for the project.
+- .gitignore: Git ignore rules.
+- data/: Folder containing the Excel data file.
+  - data/: Datos_Entrenamiento_Final.xlsx: Training/lookup data with sheet `CLIENTES`.
+- models/: Folder containing model artifacts (.pkl files).
+  - models/: modelo_perrito.pkl: Trained Decision Tree model.
+  - models/: columnas_modelo.pkl: Expected feature columns for inference.
+  - models/: traductor_respuestas.pkl: Label encoder for predictions.
+- notebooks/: Jupyter notebooks used for model training and experimentation.
+  - notebooks/: Perrito.ipynb: Model training and evaluation notebook.
 - [app.py](app.py): Streamlit app (UI + inference logic).
-- modelo_perrito.pkl: Trained Decision Tree model.
-- columnas_modelo.pkl: Expected feature columns for inference.
-- traductor_respuestas.pkl: Label encoder for predictions.
-- Datos_Entrenamiento_Final.xlsx: Training/lookup data with sheet `CLIENTES`.
-- [requirements.txt](requirements.txt): Python dependencies.
+- [requirements.txt](requirements.txt): Python dependencies that are required to run the app.
 
 ## Prerequisites
 - Python 3.10+
 - Recommended: virtual environment (`venv` or `conda`).
-- The three `.pkl` artifacts and the Excel file must be placed in the project root, they are included in the repo for demonstration purposes.
+- The three `.pkl` artifacts and the Excel file must be placed in the project root, don't worry, they are included in the repo for demonstration purposes.
 
 ## Setup
 1) Clone and enter the project folder:
