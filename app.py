@@ -5,11 +5,12 @@
 # a cada cliente en función de si es probable que regrese o no.
 
 # Estas son las librerías que vamos a usar: 
+import os # - OS para manejo de archivos y rutas
 import streamlit as st # - Streamlit para la interfaz web interactiva
 import pandas as pd # - Pandas para manipulación de datos de DataFrame y Excel
 import joblib # - Joblib para cargar el modelo ML entrenado
 from sklearn.tree import DecisionTreeClassifier # - Scikit-learn para el modelo de árbol de decisión
-import time 
+import time  # - Time para simular tiempos de espera y mejorar UX
 
 # Configuración básica de la página con Streamlit.
 st.set_page_config(
@@ -22,30 +23,41 @@ st.set_page_config(
 # Esta función carga el modelo y otros artefactos necesarios
 # El uso de st.cache_resource y st.cache_data depende de la naturaleza del dato
 # Aquí los usamos para optimizar la carga de recursos pesados como modelos y columnas
-# De esta forna el modelo y datos se cargan solo una vez y se reutilizan en futuras interacciones
+# De esta forma el modelo y datos se cargan solo una vez y se reutilizan en futuras interacciones
 # Además de manejamos errores si los archivos no están presentes
 @st.cache_resource
 def cargar_cerebro():
     try:
-        modelo = joblib.load('modelo_perrito.pkl') # Carga del modelo entrenado
-        columnas = joblib.load('columnas_modelo.pkl') # Carga de las columnas esperadas por el modelo
-        traductor = joblib.load('traductor_respuestas.pkl') # Carga del traductor de respuestas
+        # Definimos la carpeta donde están los modelos
+        carpeta_modelos = 'models'
+        
+        # Usamos os.path.join para construir la ruta correcta
+        modelo = joblib.load(os.path.join(carpeta_modelos, 'modelo_perrito.pkl')) # Carga del modelo entrenado
+        columnas = joblib.load(os.path.join(carpeta_modelos, 'columnas_modelo.pkl')) # Carga de las columnas esperadas por el modelo
+        traductor = joblib.load(os.path.join(carpeta_modelos, 'traductor_respuestas.pkl')) # Carga del traductor de respuestas
+        
         return modelo, columnas, traductor 
     except FileNotFoundError:
-        st.error("Error: Faltan archivos .pkl. Asegúrate de haberlos descargado.")
+        st.error("Error: Faltan archivos .pkl en la carpeta 'models'. Asegúrate de haberlos movido.")
         # Proyecto universitario, no hace falta ser tan estricto, nadie me va a matar o hackear si no están estos archivos
-        # si faltan es porque soy tonto y no los puse xd.
-        return None, None, None  
+        # Si faltan es porque soy tonto y no los puse xd.
+        return None, None, None
 
-@st.cache_data 
+@st.cache_data
 def cargar_base_datos():
     try:
-        # Leemos el archivo Excel y especificamos que vamos a usar la hoja 'CLIENTES'
-        df = pd.read_excel('Datos_Entrenamiento_Final.xlsx', sheet_name='CLIENTES')
-        # Esto es para limpiar posibles espacios en blanco en los nombres de las columnas del archivo Excel
+        # Definimos la carpeta donde están los datos y leemos el archivo Excel, asegurándonos de usar la hoja correcta.
+        ruta_archivo = os.path.join('data', 'Datos_Entrenamiento_Final.xlsx')
+        
+        # Leemos el archivo Excel desde la nueva ruta
+        df = pd.read_excel(ruta_archivo, sheet_name='CLIENTES')
+        
+        # Limpieza de nombres de columnas que pueden tener espacios en blanco en el archivo Excel
         df.columns = df.columns.str.strip()
-        return df 
-    except Exception:
+        return df
+    except Exception as e:
+        # Tip: Imprimir el error específico ayuda a debuggear si falla
+        st.error(f"Error al cargar la base de datos: {e}")
         return None
 
 #Cargamos el modelo y la base de datos para que estén listos para usar en la app
